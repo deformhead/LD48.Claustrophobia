@@ -197,8 +197,8 @@ new __WEBPACK_IMPORTED_MODULE_0_core_theatre_js__["a" /* Theatre */]({
     'scene': 'demo',
     'size': {
 
-        'width': 1280,
-        'height': 720
+        'width': 480,
+        'height': 432
     }
 });
 
@@ -419,7 +419,7 @@ function preload(assets, handler) {
     Promise.all(promises).then(handler);
 }
 
-// exports current module as a functions
+// exports current module as a function
 
 
 
@@ -710,25 +710,25 @@ function input(entity) {
 
                     case 'UP':
 
-                        positionComponent.y -= 32;
+                        positionComponent.y -= 48;
 
                     break;
 
                     case 'RIGHT':
 
-                        positionComponent.x += 32;
+                        positionComponent.x += 48;
 
                     break;
 
                     case 'DOWN':
 
-                        positionComponent.y += 32;
+                        positionComponent.y += 48;
 
                     break;
 
                     case 'LEFT':
 
-                        positionComponent.x -= 32;
+                        positionComponent.x -= 48;
 
                     break;
                 }
@@ -826,7 +826,7 @@ function render(entity) {
 
         this.assets.images['white-1x1@1x'],
         0, 0, 1, 1,
-        positionComponent.x - 32 / 2, positionComponent.y - 32 / 2, 32, 32
+        positionComponent.x - 48 / 2, positionComponent.y - 48 / 2, 48, 48
     );
 }
 

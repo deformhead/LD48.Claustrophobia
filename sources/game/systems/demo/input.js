@@ -16,25 +16,25 @@ function input(entity) {
 
                     case 'UP':
 
-                        positionComponent.y -= 32;
+                        positionComponent.y -= 48;
 
                     break;
 
                     case 'RIGHT':
 
-                        positionComponent.x += 32;
+                        positionComponent.x += 48;
 
                     break;
 
                     case 'DOWN':
 
-                        positionComponent.y += 32;
+                        positionComponent.y += 48;
 
                     break;
 
                     case 'LEFT':
 
-                        positionComponent.x -= 32;
+                        positionComponent.x -= 48;
 
                     break;
                 }

@@ -8,7 +8,7 @@ new Theatre({
     'scene': 'demo',
     'size': {
 
-        'width': 1280,
-        'height': 720
+        'width': 480,
+        'height': 432
     }
 });
