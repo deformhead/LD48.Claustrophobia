@@ -1,4 +1,5 @@
 import {random} from 'modules/random.js';
+import {shuffle} from 'modules/shuffle.js';
 
 function update(delta) {
 
@@ -6,9 +7,15 @@ function update(delta) {
 
     this.delta = delta;
 
-    this.inputs.push(random(['UP', 'RIGHT', 'DOWN', 'LEFT']));
-
     this.systems.recover.update.call(this, this.world.entities);
+
+    this.keyboard.update((states) => {
+
+        this.inputs = this.inputs.concat(states);
+
+        shuffle(this.inputs);
+    });
+
     this.systems.input.update.call(this, this.world.entities);
 
     this.inputs = [];

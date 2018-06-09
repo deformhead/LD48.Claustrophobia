@@ -10,7 +10,7 @@ function start() {
 
         new Input(['UP', 'RIGHT', 'DOWN', 'LEFT']),
         new Position(this.size.width / 2, this.size.height / 2),
-        new Recover(400)
+        new Recover(100)
     ]));
 }
 

@@ -16,30 +16,30 @@ function input(entity) {
 
                     case 'UP':
 
-                        positionComponent.y -= 48;
+                        positionComponent.y = (positionComponent.y - 48 >= 48) ? positionComponent.y - 48 : positionComponent.y;
 
                     break;
 
                     case 'RIGHT':
 
-                        positionComponent.x += 48;
+                        positionComponent.x = (positionComponent.x + 48 <= this.size.width - 24) ? positionComponent.x + 48 : positionComponent.x;
 
                     break;
 
                     case 'DOWN':
 
-                        positionComponent.y += 48;
+                        positionComponent.y = (positionComponent.y + 48 <= this.size.height - 48) ? positionComponent.y + 48 : positionComponent.y;
 
                     break;
 
                     case 'LEFT':
 
-                        positionComponent.x -= 48;
+                        positionComponent.x = (positionComponent.x - 48 >= 24) ? positionComponent.x - 48 : positionComponent.x;
 
                     break;
                 }
 
-                entity.add([new Recover(400)]);
+                entity.add([new Recover(100)]);
             }
         }
     });

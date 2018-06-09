@@ -167,9 +167,9 @@ function World() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__input_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__position_js__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__recover_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__input_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__position_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__recover_js__ = __webpack_require__(26);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__input_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__position_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__recover_js__["a"]; });
@@ -581,8 +581,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__destroy_js__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__render_js__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setup_js__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__start_js__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__update_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__start_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__update_js__ = __webpack_require__(30);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "destroy", function() { return __WEBPACK_IMPORTED_MODULE_0__destroy_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return __WEBPACK_IMPORTED_MODULE_1__render_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "setup", function() { return __WEBPACK_IMPORTED_MODULE_2__setup_js__["a"]; });
@@ -609,6 +609,7 @@ function destroy(game) {
 
     delete this.delta;
     delete this.inputs;
+    delete this.keyboard;
     delete this.systems;
     delete this.world;
 }
@@ -643,8 +644,12 @@ function render() {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setup; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_world_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_systems_demo_index_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_keyboard_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_modules_world_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_systems_demo_index_js__ = __webpack_require__(22);
+
+
 
 
 
@@ -654,14 +659,20 @@ function setup(game) {
     console.log('setup demo scene');
 
     this.inputs = [];
-    this.world = new __WEBPACK_IMPORTED_MODULE_0_modules_world_js__["c" /* World */]();
+    this.keyboard = new __WEBPACK_IMPORTED_MODULE_0_modules_keyboard_js__["a" /* Keyboard */]();
+    this.world = new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["c" /* World */]();
 
     this.systems = {
 
-        'input': new __WEBPACK_IMPORTED_MODULE_0_modules_world_js__["b" /* System */](['input', 'position'], __WEBPACK_IMPORTED_MODULE_1_systems_demo_index_js__["a" /* input */].bind(this)),
-        'recover': new __WEBPACK_IMPORTED_MODULE_0_modules_world_js__["b" /* System */](['recover'], __WEBPACK_IMPORTED_MODULE_1_systems_demo_index_js__["b" /* recover */].bind(this)),
-        'render': new __WEBPACK_IMPORTED_MODULE_0_modules_world_js__["b" /* System */](['position'], __WEBPACK_IMPORTED_MODULE_1_systems_demo_index_js__["c" /* render */].bind(this))
+        'input': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['input', 'position'], __WEBPACK_IMPORTED_MODULE_3_systems_demo_index_js__["a" /* input */].bind(this)),
+        'recover': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['recover'], __WEBPACK_IMPORTED_MODULE_3_systems_demo_index_js__["b" /* recover */].bind(this)),
+        'render': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['position'], __WEBPACK_IMPORTED_MODULE_3_systems_demo_index_js__["c" /* render */].bind(this))
     };
+
+    this.keyboard.listen(__WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__["d" /* UP */], 'UP');
+    this.keyboard.listen(__WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__["c" /* RIGHT */], 'RIGHT');
+    this.keyboard.listen(__WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__["a" /* DOWN */], 'DOWN');
+    this.keyboard.listen(__WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__["b" /* LEFT */], 'LEFT');
 }
 
 
@@ -672,9 +683,201 @@ function setup(game) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__input_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__recover_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__render_js__ = __webpack_require__(26);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Keyboard; });
+function Keyboard() {
+
+    const codes = [];
+    const names = [];
+    const states = {};
+
+    function listen(code, name) {
+
+        // add custom key listener
+        codes.push(code);
+        names.push(name);
+
+        states[name] = false;
+    };
+
+    function update(handler) {
+
+        const actives = [];
+
+        // retrieve all active states
+        for (let state in states) {
+
+            if (states.hasOwnProperty(state)
+            && states[state] === true) {
+
+                actives.push(state);
+            }
+        }
+
+        // call user's update handler providing all active states
+        handler(actives);
+    }
+
+    addEventListener('blur', () => {
+
+        // deactivate all states on blur
+        for (let state in states) {
+
+            if (states.hasOwnProperty(state)
+            && states[state] === true) {
+
+                states[state] = false;
+            }
+        }
+    });
+
+    addEventListener('keydown', (event) => {
+
+        const code = event.keyCode;
+        const index = codes.indexOf(code);
+
+        // if key is listened then activate its state
+        if (index !== -1) {
+
+            event.preventDefault();
+            states[names[index]] = true;
+        }
+    });
+
+    addEventListener('keyup', (event) => {
+
+        const code = event.keyCode;
+        const index = codes.indexOf(code);
+
+        // if key is listened then deactivate its state
+        if (index !== -1) {
+
+            event.preventDefault();
+            states[names[index]] = false;
+        }
+    });
+
+    this.listen = listen;
+    this.update = update;
+}
+
+// exports current module as an object
+
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export TAB */
+/* unused harmony export ENTER */
+/* unused harmony export SHIFT */
+/* unused harmony export CTRL */
+/* unused harmony export ALT */
+/* unused harmony export ESC */
+/* unused harmony export SPACE */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return LEFT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return UP; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return RIGHT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DOWN; });
+/* unused harmony export ZERO */
+/* unused harmony export ONE */
+/* unused harmony export TWO */
+/* unused harmony export THREE */
+/* unused harmony export FOUR */
+/* unused harmony export FIVE */
+/* unused harmony export SIX */
+/* unused harmony export SEVEN */
+/* unused harmony export EIGHT */
+/* unused harmony export NINE */
+/* unused harmony export A */
+/* unused harmony export B */
+/* unused harmony export C */
+/* unused harmony export D */
+/* unused harmony export E */
+/* unused harmony export F */
+/* unused harmony export G */
+/* unused harmony export H */
+/* unused harmony export I */
+/* unused harmony export J */
+/* unused harmony export K */
+/* unused harmony export L */
+/* unused harmony export M */
+/* unused harmony export N */
+/* unused harmony export O */
+/* unused harmony export P */
+/* unused harmony export Q */
+/* unused harmony export R */
+/* unused harmony export S */
+/* unused harmony export T */
+/* unused harmony export U */
+/* unused harmony export V */
+/* unused harmony export W */
+/* unused harmony export X */
+/* unused harmony export Y */
+/* unused harmony export Z */
+const TAB = 9;
+const ENTER = 13;
+const SHIFT = 16;
+const CTRL = 17;
+const ALT = 18;
+const ESC = 27;
+const SPACE = 32;
+
+const LEFT = 37;
+const UP = 38;
+const RIGHT = 39;
+const DOWN = 40;
+
+const ZERO = 48;
+const ONE = 49;
+const TWO = 50;
+const THREE = 51;
+const FOUR = 52;
+const FIVE = 53;
+const SIX = 54;
+const SEVEN = 55;
+const EIGHT = 56;
+const NINE = 57;
+
+const A = 65;
+const B = 66;
+const C = 67;
+const D = 68;
+const E = 69;
+const F = 70;
+const G = 71;
+const H = 72;
+const I = 73;
+const J = 74;
+const K = 75;
+const L = 76;
+const M = 77;
+const N = 78;
+const O = 79;
+const P = 80;
+const Q = 81;
+const R = 82;
+const S = 83;
+const T = 84;
+const U = 85;
+const V = 86;
+const W = 87;
+const X = 88;
+const Y = 89;
+const Z = 90;
+
+
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__input_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__recover_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__render_js__ = __webpack_require__(28);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__input_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__recover_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__render_js__["a"]; });
@@ -686,7 +889,7 @@ function setup(game) {
 
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -710,30 +913,30 @@ function input(entity) {
 
                     case 'UP':
 
-                        positionComponent.y -= 48;
+                        positionComponent.y = (positionComponent.y - 48 >= 48) ? positionComponent.y - 48 : positionComponent.y;
 
                     break;
 
                     case 'RIGHT':
 
-                        positionComponent.x += 48;
+                        positionComponent.x = (positionComponent.x + 48 <= this.size.width - 24) ? positionComponent.x + 48 : positionComponent.x;
 
                     break;
 
                     case 'DOWN':
 
-                        positionComponent.y += 48;
+                        positionComponent.y = (positionComponent.y + 48 <= this.size.height - 48) ? positionComponent.y + 48 : positionComponent.y;
 
                     break;
 
                     case 'LEFT':
 
-                        positionComponent.x -= 48;
+                        positionComponent.x = (positionComponent.x - 48 >= 24) ? positionComponent.x - 48 : positionComponent.x;
 
                     break;
                 }
 
-                entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_demo_index_js__["c" /* Recover */](400)]);
+                entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_demo_index_js__["c" /* Recover */](100)]);
             }
         }
     });
@@ -743,7 +946,7 @@ function input(entity) {
 
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -759,7 +962,7 @@ function Input(inputs) {
 
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -776,7 +979,7 @@ function Position(x, y) {
 
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -792,7 +995,7 @@ function Recover(remaining) {
 
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -813,7 +1016,7 @@ function recover(entity) {
 
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -834,7 +1037,7 @@ function render(entity) {
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -853,7 +1056,7 @@ function start() {
 
         new __WEBPACK_IMPORTED_MODULE_1_components_demo_index_js__["a" /* Input */](['UP', 'RIGHT', 'DOWN', 'LEFT']),
         new __WEBPACK_IMPORTED_MODULE_1_components_demo_index_js__["b" /* Position */](this.size.width / 2, this.size.height / 2),
-        new __WEBPACK_IMPORTED_MODULE_1_components_demo_index_js__["c" /* Recover */](400)
+        new __WEBPACK_IMPORTED_MODULE_1_components_demo_index_js__["c" /* Recover */](100)
     ]));
 }
 
@@ -861,12 +1064,14 @@ function start() {
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return update; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_random_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_random_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_modules_shuffle_js__ = __webpack_require__(32);
+
 
 
 function update(delta) {
@@ -875,9 +1080,15 @@ function update(delta) {
 
     this.delta = delta;
 
-    this.inputs.push(Object(__WEBPACK_IMPORTED_MODULE_0_modules_random_js__["a" /* random */])(['UP', 'RIGHT', 'DOWN', 'LEFT']));
-
     this.systems.recover.update.call(this, this.world.entities);
+
+    this.keyboard.update((states) => {
+
+        this.inputs = this.inputs.concat(states);
+
+        Object(__WEBPACK_IMPORTED_MODULE_1_modules_shuffle_js__["a" /* shuffle */])(this.inputs);
+    });
+
     this.systems.input.update.call(this, this.world.entities);
 
     this.inputs = [];
@@ -887,11 +1098,11 @@ function update(delta) {
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return random; });
+/* unused harmony export random */
 function random(items) {
 
     if (typeof items === 'number'
@@ -908,6 +1119,41 @@ function random(items) {
     }
 
     return null;
+}
+
+// exports current module as a function
+
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return shuffle; });
+function shuffle(array) {
+
+    const length = array.length;
+
+    // Fisher-Yates shuffle
+    for (let iterator = 0; iterator < length; iterator += 1) {
+
+        // define target randomized index from given array
+        const target = Math.floor(Math.random() * (iterator + 1));
+
+        // if target index is different of current iterator then switch values
+        if (target !== iterator) {
+
+            const temporary = array[iterator];
+
+            // switch values
+            array[iterator] = array[target];
+            array[target] = temporary;
+        }
+    }
+
+    // returns given array with mutation
+    return array;
 }
 
 // exports current module as a function

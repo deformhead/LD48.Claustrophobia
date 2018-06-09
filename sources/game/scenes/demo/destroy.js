@@ -4,6 +4,7 @@ function destroy(game) {
 
     delete this.delta;
     delete this.inputs;
+    delete this.keyboard;
     delete this.systems;
     delete this.world;
 }
