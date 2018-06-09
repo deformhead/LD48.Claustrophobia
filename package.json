@@ -1,0 +1,29 @@
+{
+    "name": "theatre",
+    "version": "0.1.0",
+    "description": "javascript es6 game framework",
+    "main": "sources/index.js",
+    "scripts": {
+
+        "start": "webpack --watch",
+        "test": "echo \"Hello, friend.\" && exit 0"
+    },
+    "repository": {
+
+        "type": "git",
+        "url": "git+https://github.com/deformhead/Theatre.git"
+    },
+    "author": "deformhead",
+    "license": "MIT",
+    "bugs": {
+
+        "url": "https://github.com/deformhead/Theatre/issues"
+    },
+    "homepage": "https://github.com/deformhead/Theatre#readme",
+    "devDependencies": {
+
+        "uglifyjs-webpack-plugin": "1.0.1",
+        "url-loader": "1.0.1",
+        "webpack": "3.8.1"
+    }
+}
