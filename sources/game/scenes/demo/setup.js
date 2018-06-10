@@ -4,7 +4,7 @@ import {World, System} from 'modules/world.js';
 
 import * as systems from 'systems/demo/index.js';
 
-function setup(game) {
+function setup() {
 
     console.log('setup demo scene');
 
