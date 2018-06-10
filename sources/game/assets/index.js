@@ -1,5 +1,5 @@
-import {images} from './images.js';
+import {demo} from './demo/index.js';
 
-const assets = images;
+const assets = [].concat(demo);
 
 export {assets};

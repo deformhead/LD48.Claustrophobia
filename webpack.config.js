@@ -14,7 +14,6 @@ module.exports = {
         'alias': {
 
             'assets': path.resolve(__dirname, 'sources/game/assets/'),
-            'images': path.resolve(__dirname, 'sources/game/assets/images/'),
             'components': path.resolve(__dirname, 'sources/game/components/'),
             'scenes': path.resolve(__dirname, 'sources/game/scenes/'),
             'systems': path.resolve(__dirname, 'sources/game/systems/'),
