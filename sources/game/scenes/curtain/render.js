@@ -1,4 +1,4 @@
-function render(game) {
+function render() {
 
     console.log('render curtain scene');
 

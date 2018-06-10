@@ -1,4 +1,4 @@
-function setup(game) {
+function setup() {
 
     console.log('setup curtain scene');
 }

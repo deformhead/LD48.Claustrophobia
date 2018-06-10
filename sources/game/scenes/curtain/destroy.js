@@ -1,4 +1,4 @@
-function destroy(game) {
+function destroy() {
 
     console.log('destroy curtain scene');
 }

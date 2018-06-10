@@ -1,4 +1,4 @@
-function update(game, delta) {
+function update(delta) {
 
     console.log('update curtain scene');
 }

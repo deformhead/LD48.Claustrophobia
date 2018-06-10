@@ -1,4 +1,4 @@
-function start(game) {
+function start() {
 
     console.log('start curtain scene');
 }
