@@ -88,7 +88,9 @@ function World() {
 
 export {
 
+    // exports current module as an object
     World,
 
+    // exports helpers for current module
     Entity, System
 };
