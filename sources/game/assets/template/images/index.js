@@ -1,0 +1,6 @@
+const images = [
+
+    //
+];
+
+export {images};
