@@ -1,6 +1,6 @@
 function update(delta) {
 
-    // console.log('update template scene');
+    // console.log('update loading scene');
 }
 
 export {update};

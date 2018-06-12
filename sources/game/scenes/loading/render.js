@@ -1,6 +1,6 @@
 function render() {
 
-    console.log('render curtain scene');
+    // console.log('render loading scene');
 
     this.context.clearRect(0, 0, this.size.width, this.size.height);
 

@@ -8,7 +8,7 @@ import * as scenes from 'scenes/index.js';
 
 function Theatre(config) {
 
-    const {container, scene, size} = config;
+    const {container, loading, opening, size} = config;
 
     const debug = config.debug || false;
     const framerate = config.framerate || 60;
@@ -23,7 +23,7 @@ function Theatre(config) {
         const loop = new Loop(framerate);
 
         this.assets = {};
-        this.scene = scenes.curtain;
+        this.scene = this.scenes[loading];
 
         this.scene.setup.call(this);
         this.scene.start.call(this);
@@ -43,7 +43,13 @@ function Theatre(config) {
                 this.assets[asset.type + 's'][asset.name] = asset.content;
             });
 
-            this.load(scene);
+            this.scene.destroy.call(this);
+
+            this.preloaded = true;
+
+            this.scene = this.scenes[opening];
+            this.scene.setup.call(this);
+            this.scene.start.call(this);
         });
     }
 
@@ -57,10 +63,10 @@ function Theatre(config) {
 
     function restart() {
 
-        this.scene.destroy.call(this);
         this.scene.start.call(this);
     }
 
+    this.preloaded = false;
     this.scenes = scenes;
     this.size = size;
 

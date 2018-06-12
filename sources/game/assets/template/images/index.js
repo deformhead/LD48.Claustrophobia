@@ -1,6 +1,0 @@
-const images = [
-
-    //
-];
-
-export {images};

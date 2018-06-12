@@ -5,7 +5,8 @@ new Theatre({
     'container': document.body,
     'debug': true,
     'framerate': 60,
-    'scene': 'demo',
+    'loading': 'loading',
+    'opening': 'demo',
     'size': {
 
         'width': 480,

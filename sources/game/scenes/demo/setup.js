@@ -1,6 +1,6 @@
 import {Keyboard} from 'modules/keyboard.js';
 import * as KEYCODES from 'modules/keycodes.js';
-import {World, System} from 'modules/world.js';
+import {System} from 'modules/world.js';
 
 import * as systems from 'systems/demo/index.js';
 
@@ -8,10 +8,7 @@ function setup() {
 
     console.log('setup demo scene');
 
-    this.delta = 0;
-    this.inputs = [];
     this.keyboard = new Keyboard();
-    this.world = new World();
 
     this.systems = {
 

@@ -167,9 +167,9 @@ function World() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__input_js__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__position_js__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__recover_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__input_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__position_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__recover_js__ = __webpack_require__(28);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__input_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__position_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__recover_js__["a"]; });
@@ -194,7 +194,8 @@ new __WEBPACK_IMPORTED_MODULE_0_core_theatre_js__["a" /* Theatre */]({
     'container': document.body,
     'debug': true,
     'framerate': 60,
-    'scene': 'demo',
+    'loading': 'loading',
+    'opening': 'demo',
     'size': {
 
         'width': 480,
@@ -213,7 +214,7 @@ new __WEBPACK_IMPORTED_MODULE_0_core_theatre_js__["a" /* Theatre */]({
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_core_loop_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_core_preload_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_assets_index_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_scenes_index_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_scenes_index_js__ = __webpack_require__(11);
 
 
 
@@ -224,7 +225,7 @@ new __WEBPACK_IMPORTED_MODULE_0_core_theatre_js__["a" /* Theatre */]({
 
 function Theatre(config) {
 
-    const {container, scene, size} = config;
+    const {container, loading, opening, size} = config;
 
     const debug = config.debug || false;
     const framerate = config.framerate || 60;
@@ -239,7 +240,7 @@ function Theatre(config) {
         const loop = new __WEBPACK_IMPORTED_MODULE_1_core_loop_js__["a" /* Loop */](framerate);
 
         this.assets = {};
-        this.scene = __WEBPACK_IMPORTED_MODULE_4_scenes_index_js__["curtain"];
+        this.scene = this.scenes[loading];
 
         this.scene.setup.call(this);
         this.scene.start.call(this);
@@ -259,7 +260,13 @@ function Theatre(config) {
                 this.assets[asset.type + 's'][asset.name] = asset.content;
             });
 
-            this.load(scene);
+            this.scene.destroy.call(this);
+
+            this.preloaded = true;
+
+            this.scene = this.scenes[opening];
+            this.scene.setup.call(this);
+            this.scene.start.call(this);
         });
     }
 
@@ -273,10 +280,10 @@ function Theatre(config) {
 
     function restart() {
 
-        this.scene.destroy.call(this);
         this.scene.start.call(this);
     }
 
+    this.preloaded = false;
     this.scenes = __WEBPACK_IMPORTED_MODULE_4_scenes_index_js__;
     this.size = size;
 
@@ -429,10 +436,11 @@ function preload(assets, handler) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return assets; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__images_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__demo_index_js__ = __webpack_require__(8);
 
 
-const assets = __WEBPACK_IMPORTED_MODULE_0__images_js__["a" /* images */];
+const assets = []
+.concat(__WEBPACK_IMPORTED_MODULE_0__demo_index_js__["a" /* demo */]);
 
 
 
@@ -442,15 +450,12 @@ const assets = __WEBPACK_IMPORTED_MODULE_0__images_js__["a" /* images */];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return images; });
-const images = [
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return demo; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__images_index_js__ = __webpack_require__(9);
 
-    {
-        'name': 'white-1x1@1x',
-        'type': 'image',
-        'source': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII='
-    }
-];
+
+const demo = []
+.concat(__WEBPACK_IMPORTED_MODULE_0__images_index_js__["a" /* images */]);
 
 
 
@@ -460,10 +465,34 @@ const images = [
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return images; });
+const images = [
+
+    {
+        'name': 'white-1x1@1x',
+        'type': 'image',
+        'source': __webpack_require__(10)
+    }
+];
+
+
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__curtain_index_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__demo_index_js__ = __webpack_require__(16);
-/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "curtain", function() { return __WEBPACK_IMPORTED_MODULE_0__curtain_index_js__; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__loading_index_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__demo_index_js__ = __webpack_require__(18);
+/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "loading", function() { return __WEBPACK_IMPORTED_MODULE_0__loading_index_js__; });
 /* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "demo", function() { return __WEBPACK_IMPORTED_MODULE_1__demo_index_js__; });
 
 
@@ -473,16 +502,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__destroy_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__render_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setup_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__start_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__update_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__destroy_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__render_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setup_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__start_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__update_js__ = __webpack_require__(17);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "destroy", function() { return __WEBPACK_IMPORTED_MODULE_0__destroy_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return __WEBPACK_IMPORTED_MODULE_1__render_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "setup", function() { return __WEBPACK_IMPORTED_MODULE_2__setup_js__["a"]; });
@@ -498,28 +527,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return destroy; });
-function destroy(game) {
+function destroy() {
 
-    console.log('destroy curtain scene');
+    console.log('destroy loading scene' + ((this.preloaded === false) ? ' -> assets are loaded' : ''));
+    console.log('-------');
+
+    this.context.clearRect(0, 0, this.size.width, this.size.height);
 }
 
 
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-function render(game) {
+function render() {
 
-    console.log('render curtain scene');
+    // console.log('render loading scene');
 
     this.context.clearRect(0, 0, this.size.width, this.size.height);
 
@@ -531,42 +563,14 @@ function render(game) {
 
 
 /***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setup; });
-function setup(game) {
-
-    console.log('setup curtain scene');
-}
-
-
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return start; });
-function start(game) {
-
-    console.log('start curtain scene');
-}
-
-
-
-
-/***/ }),
 /* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return update; });
-function update(game, delta) {
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setup; });
+function setup() {
 
-    console.log('update curtain scene');
+    console.log('setup loading scene');
 }
 
 
@@ -577,12 +581,40 @@ function update(game, delta) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return start; });
+function start() {
+
+    console.log('start loading scene' + ((this.preloaded === false) ? ' -> loading assets...' : ''));
+}
+
+
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return update; });
+function update(delta) {
+
+    // console.log('update loading scene');
+}
+
+
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__destroy_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__render_js__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setup_js__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__start_js__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__update_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__destroy_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__render_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setup_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__start_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__update_js__ = __webpack_require__(32);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "destroy", function() { return __WEBPACK_IMPORTED_MODULE_0__destroy_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return __WEBPACK_IMPORTED_MODULE_1__render_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "setup", function() { return __WEBPACK_IMPORTED_MODULE_2__setup_js__["a"]; });
@@ -598,27 +630,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return destroy; });
-function destroy(game) {
+function destroy() {
 
     console.log('destroy demo scene');
+    console.log('-------');
+
+    this.context.clearRect(0, 0, this.size.width, this.size.height);
 
     delete this.delta;
     delete this.inputs;
+    delete this.world;
+
     delete this.keyboard;
     delete this.systems;
-    delete this.world;
 }
 
 
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -639,28 +675,26 @@ function render() {
 
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setup; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_keyboard_js__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_keyboard_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_modules_world_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_systems_demo_index_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_systems_demo_index_js__ = __webpack_require__(24);
 
 
 
 
 
 
-function setup(game) {
+function setup() {
 
     console.log('setup demo scene');
 
-    this.inputs = [];
     this.keyboard = new __WEBPACK_IMPORTED_MODULE_0_modules_keyboard_js__["a" /* Keyboard */]();
-    this.world = new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["c" /* World */]();
 
     this.systems = {
 
@@ -679,7 +713,7 @@ function setup(game) {
 
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -765,7 +799,7 @@ function Keyboard() {
 
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -871,13 +905,13 @@ const Z = 90;
 
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__input_js__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__recover_js__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__render_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__input_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__recover_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__render_js__ = __webpack_require__(30);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__input_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__recover_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__render_js__["a"]; });
@@ -889,7 +923,7 @@ const Z = 90;
 
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -946,7 +980,7 @@ function input(entity) {
 
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -962,7 +996,7 @@ function Input(inputs) {
 
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -979,7 +1013,7 @@ function Position(x, y) {
 
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -995,7 +1029,7 @@ function Recover(remaining) {
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1016,7 +1050,7 @@ function recover(entity) {
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1037,7 +1071,7 @@ function render(entity) {
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1052,6 +1086,10 @@ function start() {
 
     console.log('start demo scene');
 
+    this.delta = 0;
+    this.inputs = [];
+    this.world = new __WEBPACK_IMPORTED_MODULE_0_modules_world_js__["c" /* World */]();
+
     this.world.add(new __WEBPACK_IMPORTED_MODULE_0_modules_world_js__["a" /* Entity */]('hero', [
 
         new __WEBPACK_IMPORTED_MODULE_1_components_demo_index_js__["a" /* Input */](['UP', 'RIGHT', 'DOWN', 'LEFT']),
@@ -1064,13 +1102,13 @@ function start() {
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return update; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_random_js__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_modules_shuffle_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_random_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_modules_shuffle_js__ = __webpack_require__(34);
 
 
 
@@ -1098,7 +1136,7 @@ function update(delta) {
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1126,7 +1164,7 @@ function random(items) {
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

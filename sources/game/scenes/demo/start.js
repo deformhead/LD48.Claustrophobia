@@ -1,10 +1,14 @@
-import {Entity} from 'modules/world.js';
+import {Entity, World} from 'modules/world.js';
 
 import {Input, Position, Recover} from 'components/demo/index.js';
 
 function start() {
 
     console.log('start demo scene');
+
+    this.delta = 0;
+    this.inputs = [];
+    this.world = new World();
 
     this.world.add(new Entity('hero', [
 
