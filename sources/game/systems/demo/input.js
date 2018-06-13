@@ -39,6 +39,8 @@ function input(entity) {
                     break;
                 }
 
+                this.assets.sounds.move.play();
+
                 entity.add([new Recover(100)]);
             }
         }

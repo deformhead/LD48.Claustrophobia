@@ -21,6 +21,8 @@ function setup() {
     this.keyboard.listen(KEYCODES.RIGHT, 'RIGHT');
     this.keyboard.listen(KEYCODES.DOWN, 'DOWN');
     this.keyboard.listen(KEYCODES.LEFT, 'LEFT');
+
+    this.assets.sounds.move.volume = 0.5;
 }
 
 export {setup};
