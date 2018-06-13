@@ -27,7 +27,7 @@ module.exports = {
         'rules': [
 
             {
-                'test': /\.png$/,
+                'test': /\.ogg|\.png|\.wav$/,
                 'use': [
 
                     {'loader': 'url-loader'}
