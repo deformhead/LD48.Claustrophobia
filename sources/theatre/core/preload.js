@@ -23,6 +23,20 @@ function preload(assets, handler) {
                     resolve(asset);
                 };
             }
+
+            // if current asset is a sound then preload it
+            else if (asset.type === 'sound') {
+
+                var sound = new Audio(asset.source);
+
+                // when current sound is loaded then resolve current promise
+                sound.oncanplaythrough = function () {
+
+                    asset.content = sound;
+
+                    resolve(asset);
+                };
+            }
         });
 
         promises.push(promise);
