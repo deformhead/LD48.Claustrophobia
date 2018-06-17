@@ -11,7 +11,7 @@ function Keyboard() {
         names.push(name);
 
         states[name] = false;
-    };
+    }
 
     function update(handler) {
 
