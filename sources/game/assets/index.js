@@ -1,6 +1,8 @@
-import {demo} from './demo/index.js';
+import {images} from './images/index.js';
+import {sounds} from './sounds/index.js';
 
 const assets = []
-.concat(demo);
+.concat(images)
+.concat(sounds);
 
 export {assets};

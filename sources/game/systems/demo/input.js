@@ -1,4 +1,4 @@
-import {Recover} from 'components/demo/index.js';
+import {Recover} from 'components/recover.js';
 
 function input(entity) {
 

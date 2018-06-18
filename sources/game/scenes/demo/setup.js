@@ -1,8 +1,10 @@
 import {Keyboard} from 'modules/keyboard.js';
-import * as KEYCODES from 'modules/keycodes.js';
+import {DOWN, LEFT, RIGHT, UP} from 'modules/keycodes.js';
 import {System} from 'modules/world.js';
 
-import * as systems from 'systems/demo/index.js';
+import {input} from 'systems/demo/input.js';
+import {recover} from 'systems/demo/recover.js';
+import {render} from 'systems/demo/render.js';
 
 function setup() {
 
@@ -12,15 +14,15 @@ function setup() {
 
     this.systems = {
 
-        'input': new System(['input', 'position'], systems.input.bind(this)),
-        'recover': new System(['recover'], systems.recover.bind(this)),
-        'render': new System(['position'], systems.render.bind(this))
+        'input': new System(['input', 'position'], input.bind(this)),
+        'recover': new System(['recover'], recover.bind(this)),
+        'render': new System(['position'], render.bind(this))
     };
 
-    this.keyboard.listen(KEYCODES.UP, 'UP');
-    this.keyboard.listen(KEYCODES.RIGHT, 'RIGHT');
-    this.keyboard.listen(KEYCODES.DOWN, 'DOWN');
-    this.keyboard.listen(KEYCODES.LEFT, 'LEFT');
+    this.keyboard.listen(UP, 'UP');
+    this.keyboard.listen(RIGHT, 'RIGHT');
+    this.keyboard.listen(DOWN, 'DOWN');
+    this.keyboard.listen(LEFT, 'LEFT');
 
     this.assets.sounds.move.volume = 0.5;
 }

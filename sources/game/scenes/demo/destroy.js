@@ -1,9 +1,9 @@
 function destroy() {
 
     console.log('destroy demo scene');
-    console.log('-------');
 
     this.context.clearRect(0, 0, this.size.width, this.size.height);
+    this.keyboard.destroy();
 
     delete this.delta;
     delete this.inputs;
@@ -11,6 +11,8 @@ function destroy() {
 
     delete this.keyboard;
     delete this.systems;
+
+    console.log('-------');
 }
 
 export {destroy};

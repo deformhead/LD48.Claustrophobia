@@ -1,6 +1,8 @@
 import {Entity, World} from 'modules/world.js';
 
-import {Input, Position, Recover} from 'components/demo/index.js';
+import {Input} from 'components/input.js';
+import {Position} from 'components/position.js';
+import {Recover} from 'components/recover.js';
 
 function start() {
 
