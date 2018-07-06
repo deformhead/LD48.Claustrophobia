@@ -232,6 +232,7 @@ function Theatre(config) {
 
         const canvas = new __WEBPACK_IMPORTED_MODULE_0_core_canvas_js__["a" /* Canvas */]('2d', 'theatre', size.width, size.height);
 
+        this.container = canvas.element;
         this.context = canvas.context;
         container.appendChild(canvas.element);
 
@@ -643,8 +644,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__destroy_js__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__render_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setup_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__start_js__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__update_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__start_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__update_js__ = __webpack_require__(34);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "destroy", function() { return __WEBPACK_IMPORTED_MODULE_0__destroy_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return __WEBPACK_IMPORTED_MODULE_1__render_js__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "setup", function() { return __WEBPACK_IMPORTED_MODULE_2__setup_js__["a"]; });
@@ -712,12 +713,14 @@ function render() {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setup; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_keyboard_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_keyboard_js__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_modules_world_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_systems_demo_input_js__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_systems_demo_recover_js__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_systems_demo_render_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_systems_demo_move_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_systems_demo_recover_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_systems_demo_render_js__ = __webpack_require__(30);
+
 
 
 
@@ -730,19 +733,17 @@ function setup() {
 
     console.log('setup demo scene');
 
-    this.keyboard = new __WEBPACK_IMPORTED_MODULE_0_modules_keyboard_js__["a" /* Keyboard */]();
+    this.inputs = [];
+
+    this.keyboard = new __WEBPACK_IMPORTED_MODULE_0_modules_keyboard_js__["a" /* Keyboard */]([__WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__["d" /* UP */], __WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__["c" /* RIGHT */], __WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__["a" /* DOWN */], __WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__["b" /* LEFT */]], this.inputs);
 
     this.systems = {
 
-        'input': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['input', 'position'], __WEBPACK_IMPORTED_MODULE_3_systems_demo_input_js__["a" /* input */].bind(this)),
-        'recover': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['recover'], __WEBPACK_IMPORTED_MODULE_4_systems_demo_recover_js__["a" /* recover */].bind(this)),
-        'render': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['position'], __WEBPACK_IMPORTED_MODULE_5_systems_demo_render_js__["a" /* render */].bind(this))
+        'input': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['input'], __WEBPACK_IMPORTED_MODULE_3_systems_demo_input_js__["a" /* input */].bind(this)),
+        'move': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['move', 'position'], __WEBPACK_IMPORTED_MODULE_4_systems_demo_move_js__["a" /* move */].bind(this)),
+        'recover': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['recover'], __WEBPACK_IMPORTED_MODULE_5_systems_demo_recover_js__["a" /* recover */].bind(this)),
+        'render': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['position'], __WEBPACK_IMPORTED_MODULE_6_systems_demo_render_js__["a" /* render */].bind(this))
     };
-
-    this.keyboard.listen(__WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__["d" /* UP */], 'UP');
-    this.keyboard.listen(__WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__["c" /* RIGHT */], 'RIGHT');
-    this.keyboard.listen(__WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__["a" /* DOWN */], 'DOWN');
-    this.keyboard.listen(__WEBPACK_IMPORTED_MODULE_1_modules_keycodes_js__["b" /* LEFT */], 'LEFT');
 
     this.assets.sounds.move.volume = 0.5;
 }
@@ -751,27 +752,34 @@ function setup() {
 
 
 /***/ }),
-/* 23 */,
-/* 24 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Keyboard; });
-function Keyboard() {
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__keynames_js__ = __webpack_require__(24);
 
-    const codes = [];
+
+function Keyboard(codes, inputs) {
+
     const names = [];
     const states = {};
 
     function blur() {
 
-        // deactivate all states on blur
         for (let state in states) {
 
             if (states.hasOwnProperty(state)
             && states[state] === true) {
 
                 states[state] = false;
+
+                inputs.push({
+
+                    'type': 'KEYBOARD',
+                    'action': state,
+                    'state': 'UP'
+                });
             }
         }
     }
@@ -788,11 +796,19 @@ function Keyboard() {
         const code = event.keyCode;
         const index = codes.indexOf(code);
 
-        // if key is listened then activate its state
-        if (index !== -1) {
+        if (index !== -1
+        && states[names[index]] === false) {
 
             event.preventDefault();
+
             states[names[index]] = true;
+
+            inputs.push({
+
+                'type': 'KEYBOARD',
+                'action': names[index],
+                'state': 'DOWN'
+            });
         }
     }
 
@@ -801,21 +817,20 @@ function Keyboard() {
         const code = event.keyCode;
         const index = codes.indexOf(code);
 
-        // if key is listened then deactivate its state
-        if (index !== -1) {
+        if (index !== -1
+        && states[names[index]] === true) {
 
             event.preventDefault();
+
             states[names[index]] = false;
+
+            inputs.push({
+
+                'type': 'KEYBOARD',
+                'action': names[index],
+                'state': 'UP'
+            });
         }
-    }
-
-    function listen(code, name) {
-
-        // add custom key listener
-        codes.push(code);
-        names.push(name);
-
-        states[name] = false;
     }
 
     function setup() {
@@ -825,33 +840,89 @@ function Keyboard() {
         addEventListener('keyup', keyup);
     }
 
-    function update(handler) {
+    codes.forEach((code) => {
 
-        const actives = [];
+        if (typeof __WEBPACK_IMPORTED_MODULE_0__keynames_js__["a" /* keynames */][code] !== 'undefined') {
 
-        // retrieve all active states
-        for (let state in states) {
+            const name = 'KEY_' + __WEBPACK_IMPORTED_MODULE_0__keynames_js__["a" /* keynames */][code];
 
-            if (states.hasOwnProperty(state)
-            && states[state] === true) {
+            codes.push(code);
+            names.push(name);
 
-                actives.push(state);
-            }
+            states[name] = false;
         }
-
-        // call user's update handler providing all active states
-        handler(actives);
-    }
+    });
 
     setup.call(this);
 
     this.destroy = destroy;
-    this.listen = listen;
     this.setup = setup;
-    this.update = update;
 }
 
 // exports current module as an object
+
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return keynames; });
+const keynames = [];
+
+keynames[9] = 'TAB';
+keynames[13] = 'ENTER';
+keynames[16] = 'SHIFT';
+keynames[17] = 'CTRL';
+keynames[18] = 'ALT';
+keynames[27] = 'ESC';
+keynames[32] = 'SPACE';
+
+keynames[37] = 'LEFT';
+keynames[38] = 'UP';
+keynames[39] = 'RIGHT';
+keynames[40] = 'DOWN';
+
+keynames[48] = 'ZERO';
+keynames[49] = 'ONE';
+keynames[50] = 'TWO';
+keynames[51] = 'THREE';
+keynames[52] = 'FOUR';
+keynames[53] = 'FIVE';
+keynames[54] = 'SIX';
+keynames[55] = 'SEVEN';
+keynames[56] = 'EIGHT';
+keynames[57] = 'NINE';
+
+keynames[65] = 'A';
+keynames[66] = 'B';
+keynames[67] = 'C';
+keynames[68] = 'D';
+keynames[69] = 'E';
+keynames[70] = 'F';
+keynames[71] = 'G';
+keynames[72] = 'H';
+keynames[73] = 'I';
+keynames[74] = 'J';
+keynames[75] = 'K';
+keynames[76] = 'L';
+keynames[77] = 'M';
+keynames[78] = 'N';
+keynames[79] = 'O';
+keynames[80] = 'P';
+keynames[81] = 'Q';
+keynames[82] = 'R';
+keynames[83] = 'S';
+keynames[84] = 'T';
+keynames[85] = 'U';
+keynames[86] = 'V';
+keynames[87] = 'W';
+keynames[88] = 'X';
+keynames[89] = 'Y';
+keynames[90] = 'Z';
+
+// exports current module as an array
 
 
 
@@ -967,51 +1038,89 @@ const Z = 90;
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return input; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_recover_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_move_js__ = __webpack_require__(27);
 
 
 function input(entity) {
 
     this.inputs.forEach((input) => {
 
-        if (entity.has(['recover']) === false) {
+        const inputComponent = entity.get('input');
 
-            const inputComponent = entity.get('input');
+        if (inputComponent.inputs.indexOf(input.action) !== -1
+        && input.state === 'DOWN') {
 
-            if (inputComponent.inputs.indexOf(input) !== -1) {
+            switch (input.action) {
 
-                const positionComponent = entity.get('position');
+                case 'KEY_UP':
 
-                switch (input) {
+                    entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_move_js__["a" /* Move */]('UP')]);
 
-                    case 'UP':
+                break;
 
-                        positionComponent.y = (positionComponent.y - 48 >= 48) ? positionComponent.y - 48 : positionComponent.y;
+                case 'KEY_RIGHT':
 
-                    break;
+                    entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_move_js__["a" /* Move */]('RIGHT')]);
 
-                    case 'RIGHT':
+                break;
 
-                        positionComponent.x = (positionComponent.x + 48 <= this.size.width - 24) ? positionComponent.x + 48 : positionComponent.x;
+                case 'KEY_DOWN':
 
-                    break;
+                    entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_move_js__["a" /* Move */]('DOWN')]);
 
-                    case 'DOWN':
+                break;
 
-                        positionComponent.y = (positionComponent.y + 48 <= this.size.height - 48) ? positionComponent.y + 48 : positionComponent.y;
+                case 'KEY_LEFT':
 
-                    break;
+                    entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_move_js__["a" /* Move */]('LEFT')]);
 
-                    case 'LEFT':
+                break;
+            }
+        }
 
-                        positionComponent.x = (positionComponent.x - 48 >= 24) ? positionComponent.x - 48 : positionComponent.x;
+        else if (entity.has(['move']) === true
+        && inputComponent.inputs.indexOf(input.action) !== -1
+        && input.state === 'UP') {
 
-                    break;
-                }
+            const moveComponent = entity.get('move');
 
-                this.assets.sounds.move.play();
+            switch (input.action) {
 
-                entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_recover_js__["a" /* Recover */](100)]);
+                case 'KEY_UP':
+
+                    if (moveComponent.direction === 'UP') {
+
+                        entity.remove(['move']);
+                    }
+
+                break;
+
+                case 'KEY_RIGHT':
+
+                    if (moveComponent.direction === 'RIGHT') {
+
+                        entity.remove(['move']);
+                    }
+
+                break;
+
+                case 'KEY_DOWN':
+
+                    if (moveComponent.direction === 'DOWN') {
+
+                        entity.remove(['move']);
+                    }
+
+                break;
+
+                case 'KEY_LEFT':
+
+                    if (moveComponent.direction === 'LEFT') {
+
+                        entity.remove(['move']);
+                    }
+
+                break;
             }
         }
     });
@@ -1022,6 +1131,74 @@ function input(entity) {
 
 /***/ }),
 /* 27 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Move; });
+function Move(direction) {
+
+    this.name = 'move';
+
+    this.direction = direction;
+}
+
+
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return move; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_recover_js__ = __webpack_require__(1);
+
+
+function move(entity) {
+
+    if (entity.has(['recover']) === false) {
+
+        const moveComponent = entity.get('move');
+        const positionComponent = entity.get('position');
+
+        switch (moveComponent.direction) {
+
+            case 'UP':
+
+                positionComponent.y = (positionComponent.y - 48 >= 48) ? positionComponent.y - 48 : positionComponent.y;
+
+            break;
+
+            case 'RIGHT':
+
+                positionComponent.x = (positionComponent.x + 48 <= this.size.width - 24) ? positionComponent.x + 48 : positionComponent.x;
+
+            break;
+
+            case 'DOWN':
+
+                positionComponent.y = (positionComponent.y + 48 <= this.size.height - 48) ? positionComponent.y + 48 : positionComponent.y;
+
+            break;
+
+            case 'LEFT':
+
+                positionComponent.x = (positionComponent.x - 48 >= 24) ? positionComponent.x - 48 : positionComponent.x;
+
+            break;
+        }
+
+        this.assets.sounds.move.play();
+
+        entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_recover_js__["a" /* Recover */](100)]);
+    }
+}
+
+
+
+
+/***/ }),
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1042,7 +1219,7 @@ function recover(entity) {
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1063,14 +1240,14 @@ function render(entity) {
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return start; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_world_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_components_input_js__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_components_position_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_components_input_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_components_position_js__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_components_recover_js__ = __webpack_require__(1);
 
 
@@ -1083,12 +1260,12 @@ function start() {
     console.log('start demo scene');
 
     this.delta = 0;
-    this.inputs = [];
+    this.inputs.length = 0;
     this.world = new __WEBPACK_IMPORTED_MODULE_0_modules_world_js__["c" /* World */]();
 
     this.world.add(new __WEBPACK_IMPORTED_MODULE_0_modules_world_js__["a" /* Entity */]('hero', [
 
-        new __WEBPACK_IMPORTED_MODULE_1_components_input_js__["a" /* Input */](['UP', 'RIGHT', 'DOWN', 'LEFT']),
+        new __WEBPACK_IMPORTED_MODULE_1_components_input_js__["a" /* Input */](['KEY_UP', 'KEY_RIGHT', 'KEY_DOWN', 'KEY_LEFT']),
         new __WEBPACK_IMPORTED_MODULE_2_components_position_js__["a" /* Position */](this.size.width / 2, this.size.height / 2),
         new __WEBPACK_IMPORTED_MODULE_3_components_recover_js__["a" /* Recover */](100)
     ]));
@@ -1098,7 +1275,7 @@ function start() {
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1114,7 +1291,7 @@ function Input(inputs) {
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1131,13 +1308,13 @@ function Position(x, y) {
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return update; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_random_js__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_modules_shuffle_js__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modules_random_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_modules_shuffle_js__ = __webpack_require__(36);
 
 
 
@@ -1148,24 +1325,17 @@ function update(delta) {
     this.delta = delta;
 
     this.systems.recover.update.call(this, this.world.entities);
-
-    this.keyboard.update((states) => {
-
-        this.inputs = this.inputs.concat(states);
-
-        Object(__WEBPACK_IMPORTED_MODULE_1_modules_shuffle_js__["a" /* shuffle */])(this.inputs);
-    });
-
     this.systems.input.update.call(this, this.world.entities);
+    this.systems.move.update.call(this, this.world.entities);
 
-    this.inputs = [];
+    this.inputs.length = 0;
 }
 
 
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1193,11 +1363,11 @@ function random(items) {
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return shuffle; });
+/* unused harmony export shuffle */
 function shuffle(array) {
 
     const length = array.length;

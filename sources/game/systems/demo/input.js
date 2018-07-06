@@ -1,47 +1,85 @@
-import {Recover} from 'components/recover.js';
+import {Move} from 'components/move.js';
 
 function input(entity) {
 
     this.inputs.forEach((input) => {
 
-        if (entity.has(['recover']) === false) {
+        const inputComponent = entity.get('input');
 
-            const inputComponent = entity.get('input');
+        if (inputComponent.inputs.indexOf(input.action) !== -1
+        && input.state === 'DOWN') {
 
-            if (inputComponent.inputs.indexOf(input) !== -1) {
+            switch (input.action) {
 
-                const positionComponent = entity.get('position');
+                case 'KEY_UP':
 
-                switch (input) {
+                    entity.add([new Move('UP')]);
 
-                    case 'UP':
+                break;
 
-                        positionComponent.y = (positionComponent.y - 48 >= 48) ? positionComponent.y - 48 : positionComponent.y;
+                case 'KEY_RIGHT':
 
-                    break;
+                    entity.add([new Move('RIGHT')]);
 
-                    case 'RIGHT':
+                break;
 
-                        positionComponent.x = (positionComponent.x + 48 <= this.size.width - 24) ? positionComponent.x + 48 : positionComponent.x;
+                case 'KEY_DOWN':
 
-                    break;
+                    entity.add([new Move('DOWN')]);
 
-                    case 'DOWN':
+                break;
 
-                        positionComponent.y = (positionComponent.y + 48 <= this.size.height - 48) ? positionComponent.y + 48 : positionComponent.y;
+                case 'KEY_LEFT':
 
-                    break;
+                    entity.add([new Move('LEFT')]);
 
-                    case 'LEFT':
+                break;
+            }
+        }
 
-                        positionComponent.x = (positionComponent.x - 48 >= 24) ? positionComponent.x - 48 : positionComponent.x;
+        else if (entity.has(['move']) === true
+        && inputComponent.inputs.indexOf(input.action) !== -1
+        && input.state === 'UP') {
 
-                    break;
-                }
+            const moveComponent = entity.get('move');
 
-                this.assets.sounds.move.play();
+            switch (input.action) {
 
-                entity.add([new Recover(100)]);
+                case 'KEY_UP':
+
+                    if (moveComponent.direction === 'UP') {
+
+                        entity.remove(['move']);
+                    }
+
+                break;
+
+                case 'KEY_RIGHT':
+
+                    if (moveComponent.direction === 'RIGHT') {
+
+                        entity.remove(['move']);
+                    }
+
+                break;
+
+                case 'KEY_DOWN':
+
+                    if (moveComponent.direction === 'DOWN') {
+
+                        entity.remove(['move']);
+                    }
+
+                break;
+
+                case 'KEY_LEFT':
+
+                    if (moveComponent.direction === 'LEFT') {
+
+                        entity.remove(['move']);
+                    }
+
+                break;
             }
         }
     });

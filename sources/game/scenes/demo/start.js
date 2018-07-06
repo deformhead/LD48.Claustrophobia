@@ -9,12 +9,12 @@ function start() {
     console.log('start demo scene');
 
     this.delta = 0;
-    this.inputs = [];
+    this.inputs.length = 0;
     this.world = new World();
 
     this.world.add(new Entity('hero', [
 
-        new Input(['UP', 'RIGHT', 'DOWN', 'LEFT']),
+        new Input(['KEY_UP', 'KEY_RIGHT', 'KEY_DOWN', 'KEY_LEFT']),
         new Position(this.size.width / 2, this.size.height / 2),
         new Recover(100)
     ]));
