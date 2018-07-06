@@ -1,18 +1,25 @@
-function Keyboard() {
+import {keynames} from './keynames.js';
 
-    const codes = [];
+function Keyboard(codes, inputs) {
+
     const names = [];
     const states = {};
 
     function blur() {
 
-        // deactivate all states on blur
         for (let state in states) {
 
             if (states.hasOwnProperty(state)
             && states[state] === true) {
 
                 states[state] = false;
+
+                inputs.push({
+
+                    'type': 'KEYBOARD',
+                    'action': state,
+                    'state': 'UP'
+                });
             }
         }
     }
@@ -29,11 +36,19 @@ function Keyboard() {
         const code = event.keyCode;
         const index = codes.indexOf(code);
 
-        // if key is listened then activate its state
-        if (index !== -1) {
+        if (index !== -1
+        && states[names[index]] === false) {
 
             event.preventDefault();
+
             states[names[index]] = true;
+
+            inputs.push({
+
+                'type': 'KEYBOARD',
+                'action': names[index],
+                'state': 'DOWN'
+            });
         }
     }
 
@@ -42,21 +57,20 @@ function Keyboard() {
         const code = event.keyCode;
         const index = codes.indexOf(code);
 
-        // if key is listened then deactivate its state
-        if (index !== -1) {
+        if (index !== -1
+        && states[names[index]] === true) {
 
             event.preventDefault();
+
             states[names[index]] = false;
+
+            inputs.push({
+
+                'type': 'KEYBOARD',
+                'action': names[index],
+                'state': 'UP'
+            });
         }
-    }
-
-    function listen(code, name) {
-
-        // add custom key listener
-        codes.push(code);
-        names.push(name);
-
-        states[name] = false;
     }
 
     function setup() {
@@ -66,30 +80,23 @@ function Keyboard() {
         addEventListener('keyup', keyup);
     }
 
-    function update(handler) {
+    codes.forEach((code) => {
 
-        const actives = [];
+        if (typeof keynames[code] !== 'undefined') {
 
-        // retrieve all active states
-        for (let state in states) {
+            const name = 'KEY_' + keynames[code];
 
-            if (states.hasOwnProperty(state)
-            && states[state] === true) {
+            codes.push(code);
+            names.push(name);
 
-                actives.push(state);
-            }
+            states[name] = false;
         }
-
-        // call user's update handler providing all active states
-        handler(actives);
-    }
+    });
 
     setup.call(this);
 
     this.destroy = destroy;
-    this.listen = listen;
     this.setup = setup;
-    this.update = update;
 }
 
 // exports current module as an object
