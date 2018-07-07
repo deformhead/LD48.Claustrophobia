@@ -17,6 +17,7 @@ function Theatre(config) {
 
         const canvas = new Canvas('2d', 'theatre', size.width, size.height);
 
+        this.container = canvas.element;
         this.context = canvas.context;
         container.appendChild(canvas.element);
 
