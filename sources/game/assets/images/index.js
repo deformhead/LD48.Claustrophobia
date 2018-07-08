@@ -1,8 +1,8 @@
 const images = [
 
     {
-        'name': 'white-1x1@1x',
-        'source': require('./white-1x1@1x.png')
+        'name': 'wizard',
+        'source': require('./wizard-16x16@2x.png')
     }
 ];
 

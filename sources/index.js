@@ -9,7 +9,7 @@ new Theatre({
     'opening': 'demo',
     'size': {
 
-        'width': 480,
-        'height': 432
+        'width': 320,
+        'height': 288
     }
 });

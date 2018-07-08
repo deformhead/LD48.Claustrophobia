@@ -1,12 +1,13 @@
 function render(entity) {
 
+    const animationComponent = entity.get('animation');
     const positionComponent = entity.get('position');
 
     this.context.drawImage(
 
-        this.assets.images['white-1x1@1x'],
-        0, 0, 1, 1,
-        positionComponent.x - 48 / 2, positionComponent.y - 48 / 2, 48, 48
+        animationComponent.image,
+        animationComponent.current.x, animationComponent.current.y, animationComponent.current.width, animationComponent.current.height,
+        positionComponent.x - animationComponent.current.width / 2, positionComponent.y - animationComponent.current.height / 2, animationComponent.current.width, animationComponent.current.height
     );
 }
 

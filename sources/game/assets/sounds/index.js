@@ -1,9 +1,3 @@
-const sounds = [
-
-    {
-        'name': 'move',
-        'source': require('./move.wav')
-    }
-];
+const sounds = [];
 
 export {sounds};
