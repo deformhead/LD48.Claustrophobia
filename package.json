@@ -1,7 +1,7 @@
 {
-    "name": "theatre",
+    "name": "ld48.claustrophobia",
     "version": "0.1.0",
-    "description": "javascript es6 game framework",
+    "description": "ludum dare claustrophobia game",
     "main": "sources/index.js",
     "scripts": {
 
@@ -11,15 +11,15 @@
     "repository": {
 
         "type": "git",
-        "url": "git+https://github.com/deformhead/Theatre.git"
+        "url": "git+https://github.com/deformhead/LD48.Claustrophobia.git"
     },
     "author": "deformhead",
     "license": "MIT",
     "bugs": {
 
-        "url": "https://github.com/deformhead/Theatre/issues"
+        "url": "https://github.com/deformhead/LD48.Claustrophobia/issues"
     },
-    "homepage": "https://github.com/deformhead/Theatre#readme",
+    "homepage": "https://github.com/deformhead/LD48.Claustrophobia#readme",
     "devDependencies": {
 
         "html-webpack-plugin": "3.2.0",
