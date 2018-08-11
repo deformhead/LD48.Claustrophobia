@@ -3,7 +3,7 @@ function Animation(image, frames) {
     this.name = 'animation';
 
     this.image = image;
-    this.framerate = 8;
+    this.framerate = 10;
     this.frames = frames;
 
     this.frame = 0;

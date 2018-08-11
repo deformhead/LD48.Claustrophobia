@@ -7,7 +7,7 @@ function render(entity) {
 
         animationComponent.image,
         animationComponent.current.x, animationComponent.current.y, animationComponent.current.width, animationComponent.current.height,
-        positionComponent.x - animationComponent.current.width / 2, positionComponent.y - animationComponent.current.height / 2, animationComponent.current.width, animationComponent.current.height
+        positionComponent.x - this.camera.x - animationComponent.current.width / 2, positionComponent.y - this.camera.y - animationComponent.current.height / 2, animationComponent.current.width, animationComponent.current.height
     );
 }
 

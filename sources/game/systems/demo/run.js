@@ -1,4 +1,5 @@
 import {Animation} from 'components/animation.js';
+import {Grid} from 'components/grid.js';
 
 function run(entity) {
 
@@ -24,24 +25,28 @@ function run(entity) {
         case 'UP':
 
             positionComponent.y -= perfect;
+            this.camera.y = positionComponent.y - this.size.height / 2;
 
         break;
 
         case 'RIGHT':
 
             positionComponent.x += perfect;
+            this.camera.x = positionComponent.x - this.size.width / 2;
 
         break;
 
         case 'DOWN':
 
             positionComponent.y += perfect;
+            this.camera.y = positionComponent.y - this.size.height / 2;
 
         break;
 
         case 'LEFT':
 
             positionComponent.x -= perfect;
+            this.camera.x = positionComponent.x - this.size.width / 2;
 
         break;
     }
@@ -50,33 +55,50 @@ function run(entity) {
 
         entity.remove(['run']);
 
+        const gridComponent = entity.get('grid');
+
+        const left = gridComponent.left;
+        const top = gridComponent.top;
+
         switch (directionComponent.direction) {
 
             case 'UP':
 
                 entity.remove(['run']);
-                entity.add([new Animation(spritesheetComponent.image, spritesheetComponent.animations['IDLE_UP'])]);
+                entity.add([
+
+                    new Animation(spritesheetComponent.image, spritesheetComponent.animations['IDLE_UP'])
+                ]);
 
             break;
 
             case 'RIGHT':
 
                 entity.remove(['run']);
-                entity.add([new Animation(spritesheetComponent.image, spritesheetComponent.animations['IDLE_RIGHT'])]);
+                entity.add([
+
+                    new Animation(spritesheetComponent.image, spritesheetComponent.animations['IDLE_RIGHT'])
+                ]);
 
             break;
 
             case 'DOWN':
 
                 entity.remove(['run']);
-                entity.add([new Animation(spritesheetComponent.image, spritesheetComponent.animations['IDLE_DOWN'])]);
+                entity.add([
+
+                    new Animation(spritesheetComponent.image, spritesheetComponent.animations['IDLE_DOWN'])
+                ]);
 
             break;
 
             case 'LEFT':
 
                 entity.remove(['run']);
-                entity.add([new Animation(spritesheetComponent.image, spritesheetComponent.animations['IDLE_LEFT'])]);
+                entity.add([
+
+                    new Animation(spritesheetComponent.image, spritesheetComponent.animations['IDLE_LEFT'])
+                ]);
 
             break;
         }
