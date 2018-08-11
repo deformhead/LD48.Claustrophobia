@@ -8,6 +8,7 @@ function update(delta) {
     this.delta = delta;
 
     this.systems.input.update.call(this, this.world.entities);
+    this.systems.run.update.call(this, this.world.entities);
     this.systems.animate.update.call(this, this.world.entities);
 
     this.inputs.length = 0;

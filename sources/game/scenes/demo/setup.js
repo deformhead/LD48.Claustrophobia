@@ -5,6 +5,7 @@ import {System} from 'modules/world.js';
 import {animate} from 'systems/demo/animate.js';
 import {input} from 'systems/demo/input.js';
 import {render} from 'systems/demo/render.js';
+import {run} from 'systems/demo/run.js';
 
 function setup() {
 
@@ -18,7 +19,8 @@ function setup() {
 
         'animate': new System(['animation', 'spritesheet'], animate.bind(this)),
         'input': new System(['input'], input.bind(this)),
-        'render': new System(['position', 'animation', 'spritesheet'], render.bind(this))
+        'render': new System(['position', 'animation', 'spritesheet'], render.bind(this)),
+        'run': new System(['direction', 'run'], run.bind(this)),
     };
 }
 

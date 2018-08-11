@@ -746,6 +746,8 @@ function render() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_systems_demo_animate_js__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_systems_demo_input_js__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_systems_demo_render_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_systems_demo_run_js__ = __webpack_require__(37);
+
 
 
 
@@ -766,7 +768,8 @@ function setup() {
 
         'animate': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['animation', 'spritesheet'], __WEBPACK_IMPORTED_MODULE_3_systems_demo_animate_js__["a" /* animate */].bind(this)),
         'input': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['input'], __WEBPACK_IMPORTED_MODULE_4_systems_demo_input_js__["a" /* input */].bind(this)),
-        'render': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['position', 'animation', 'spritesheet'], __WEBPACK_IMPORTED_MODULE_5_systems_demo_render_js__["a" /* render */].bind(this))
+        'render': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['position', 'animation', 'spritesheet'], __WEBPACK_IMPORTED_MODULE_5_systems_demo_render_js__["a" /* render */].bind(this)),
+        'run': new __WEBPACK_IMPORTED_MODULE_2_modules_world_js__["b" /* System */](['direction', 'run'], __WEBPACK_IMPORTED_MODULE_6_systems_demo_run_js__["a" /* run */].bind(this)),
     };
 }
 
@@ -1105,7 +1108,8 @@ function input(entity) {
         const inputComponent = entity.get('input');
         const spritesheetComponent = entity.get('spritesheet');
 
-        if (inputComponent.inputs.indexOf(input.action) !== -1
+        if (entity.has(['run']) === false
+        && inputComponent.inputs.indexOf(input.action) !== -1
         && input.state === 'DOWN') {
 
             switch (input.action) {
@@ -1115,7 +1119,7 @@ function input(entity) {
                     entity.add([
 
                         new __WEBPACK_IMPORTED_MODULE_1_components_direction_js__["a" /* Direction */]('UP'),
-                        new __WEBPACK_IMPORTED_MODULE_2_components_run_js__["a" /* Run */](),
+                        new __WEBPACK_IMPORTED_MODULE_2_components_run_js__["a" /* Run */](500),
                         new __WEBPACK_IMPORTED_MODULE_0_components_animation_js__["a" /* Animation */](spritesheetComponent.image, spritesheetComponent.animations['RUN_UP'])
                     ]);
 
@@ -1126,7 +1130,7 @@ function input(entity) {
                     entity.add([
 
                         new __WEBPACK_IMPORTED_MODULE_1_components_direction_js__["a" /* Direction */]('RIGHT'),
-                        new __WEBPACK_IMPORTED_MODULE_2_components_run_js__["a" /* Run */](),
+                        new __WEBPACK_IMPORTED_MODULE_2_components_run_js__["a" /* Run */](500),
                         new __WEBPACK_IMPORTED_MODULE_0_components_animation_js__["a" /* Animation */](spritesheetComponent.image, spritesheetComponent.animations['RUN_RIGHT'])
                     ]);
 
@@ -1137,7 +1141,7 @@ function input(entity) {
                     entity.add([
 
                         new __WEBPACK_IMPORTED_MODULE_1_components_direction_js__["a" /* Direction */]('DOWN'),
-                        new __WEBPACK_IMPORTED_MODULE_2_components_run_js__["a" /* Run */](),
+                        new __WEBPACK_IMPORTED_MODULE_2_components_run_js__["a" /* Run */](500),
                         new __WEBPACK_IMPORTED_MODULE_0_components_animation_js__["a" /* Animation */](spritesheetComponent.image, spritesheetComponent.animations['RUN_DOWN'])
                     ]);
 
@@ -1148,57 +1152,9 @@ function input(entity) {
                     entity.add([
 
                         new __WEBPACK_IMPORTED_MODULE_1_components_direction_js__["a" /* Direction */]('LEFT'),
-                        new __WEBPACK_IMPORTED_MODULE_2_components_run_js__["a" /* Run */](),
+                        new __WEBPACK_IMPORTED_MODULE_2_components_run_js__["a" /* Run */](500),
                         new __WEBPACK_IMPORTED_MODULE_0_components_animation_js__["a" /* Animation */](spritesheetComponent.image, spritesheetComponent.animations['RUN_LEFT'])
                     ]);
-
-                break;
-            }
-        }
-
-        else if (entity.has(['run']) === true
-        && inputComponent.inputs.indexOf(input.action) !== -1
-        && input.state === 'UP') {
-
-            switch (input.action) {
-
-                case 'KEY_UP':
-
-                    if (directionComponent.direction === 'UP') {
-
-                        entity.remove(['run']);
-                        entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_animation_js__["a" /* Animation */](spritesheetComponent.image, spritesheetComponent.animations['IDLE_UP'])]);
-                    }
-
-                break;
-
-                case 'KEY_RIGHT':
-
-                    if (directionComponent.direction === 'RIGHT') {
-
-                        entity.remove(['run']);
-                        entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_animation_js__["a" /* Animation */](spritesheetComponent.image, spritesheetComponent.animations['IDLE_RIGHT'])]);
-                    }
-
-                break;
-
-                case 'KEY_DOWN':
-
-                    if (directionComponent.direction === 'DOWN') {
-
-                        entity.remove(['run']);
-                        entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_animation_js__["a" /* Animation */](spritesheetComponent.image, spritesheetComponent.animations['IDLE_DOWN'])]);
-                    }
-
-                break;
-
-                case 'KEY_LEFT':
-
-                    if (directionComponent.direction === 'LEFT') {
-
-                        entity.remove(['run']);
-                        entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_animation_js__["a" /* Animation */](spritesheetComponent.image, spritesheetComponent.animations['IDLE_LEFT'])]);
-                    }
 
                 break;
             }
@@ -1215,9 +1171,13 @@ function input(entity) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Run; });
-function Run() {
+function Run(duration) {
 
     this.name = 'run';
+
+    this.duration = duration
+    this.elapsed = 0
+    this.offset = 0;
 }
 
 
@@ -1351,6 +1311,7 @@ function update(delta) {
     this.delta = delta;
 
     this.systems.input.update.call(this, this.world.entities);
+    this.systems.run.update.call(this, this.world.entities);
     this.systems.animate.update.call(this, this.world.entities);
 
     this.inputs.length = 0;
@@ -1419,6 +1380,101 @@ function shuffle(array) {
 }
 
 // exports current module as a function
+
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return run; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_animation_js__ = __webpack_require__(1);
+
+
+function run(entity) {
+
+    const directionComponent = entity.get('direction');
+    const positionComponent = entity.get('position');
+    const runComponent = entity.get('run');
+    const spritesheetComponent = entity.get('spritesheet');
+
+    runComponent.elapsed += this.delta;
+
+    let move = runComponent.offset + 32 * (this.delta / runComponent.duration);
+    let perfect = Math.floor(move);
+
+    runComponent.offset = move - perfect;
+
+    if (runComponent.elapsed > runComponent.duration) {
+
+        perfect += Math.ceil(runComponent.offset);
+    }
+
+    switch (directionComponent.direction) {
+
+        case 'UP':
+
+            positionComponent.y -= perfect;
+
+        break;
+
+        case 'RIGHT':
+
+            positionComponent.x += perfect;
+
+        break;
+
+        case 'DOWN':
+
+            positionComponent.y += perfect;
+
+        break;
+
+        case 'LEFT':
+
+            positionComponent.x -= perfect;
+
+        break;
+    }
+
+    if (runComponent.elapsed >= runComponent.duration) {
+
+        entity.remove(['run']);
+
+        switch (directionComponent.direction) {
+
+            case 'UP':
+
+                entity.remove(['run']);
+                entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_animation_js__["a" /* Animation */](spritesheetComponent.image, spritesheetComponent.animations['IDLE_UP'])]);
+
+            break;
+
+            case 'RIGHT':
+
+                entity.remove(['run']);
+                entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_animation_js__["a" /* Animation */](spritesheetComponent.image, spritesheetComponent.animations['IDLE_RIGHT'])]);
+
+            break;
+
+            case 'DOWN':
+
+                entity.remove(['run']);
+                entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_animation_js__["a" /* Animation */](spritesheetComponent.image, spritesheetComponent.animations['IDLE_DOWN'])]);
+
+            break;
+
+            case 'LEFT':
+
+                entity.remove(['run']);
+                entity.add([new __WEBPACK_IMPORTED_MODULE_0_components_animation_js__["a" /* Animation */](spritesheetComponent.image, spritesheetComponent.animations['IDLE_LEFT'])]);
+
+            break;
+        }
+    }
+}
+
 
 
 
