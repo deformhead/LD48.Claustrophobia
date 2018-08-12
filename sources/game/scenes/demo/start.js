@@ -12,13 +12,15 @@ import {Pattern} from 'components/pattern.js';
 import {Shadow} from 'components/shadow.js';
 import {Spritesheet} from 'components/spritesheet.js';
 
+import {zero} from './levels/zero.js';
+import {zeroTwo} from './levels/zero-two.js';
 import {one} from './levels/one.js';
 import {two} from './levels/two.js';
 import {three} from './levels/three.js';
 
 function start() {
 
-    this.levels = [one, two, three];
+    this.levels = [zero, zeroTwo, one, two, three];
     this.level = this.level || this.levels[0];
 
     console.log('start demo scene');

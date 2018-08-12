@@ -27,6 +27,10 @@ const images = [
     {
         'name': 'black',
         'source': require('./black-16x16@2x.png')
+    },
+    {
+        'name': 'splash',
+        'source': require('./splash-160x144@2x.png')
     }
 ];
 
