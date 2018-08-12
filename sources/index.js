@@ -10,6 +10,6 @@ new Theatre({
     'size': {
 
         'width': 320,
-        'height': 288 * 2
+        'height': 288
     }
 });

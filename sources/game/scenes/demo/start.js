@@ -1,20 +1,28 @@
 import {Entity, World} from 'modules/world.js';
+import {random} from 'modules/random.js';
 
 import {Animation} from 'components/animation.js';
 import {Direction} from 'components/direction.js';
 import {Hitbox} from 'components/hitbox.js';
+import {HUD} from 'components/hud.js';
 import {Grid} from 'components/grid.js';
 import {Input} from 'components/input.js';
 import {Position} from 'components/position.js';
 import {Pattern} from 'components/pattern.js';
 import {Spritesheet} from 'components/spritesheet.js';
 
+import {one} from './levels/one.js';
+import {two} from './levels/two.js';
+
 function start() {
+
+    this.levels = [one, two];
+    this.level = this.level || this.levels[0];
 
     console.log('start demo scene');
 
-    const left = 3;
-    const top = 3;
+    const left = this.level.hero[0];
+    const top = this.level.hero[1];
 
     this.delta = 0;
     this.inputs.length = 0;
@@ -25,52 +33,43 @@ function start() {
         'y': 32 * top - this.size.height / 2
     }
 
-    this.enemies = [
+    this.grid = this.level.grid;
+    this.moves = this.level.moves;
+    this.enemies = this.level.enemies;
+    this.hearts = [];
 
-        [
-            {'x': 2, 'y': 4, 'direction': 'RIGHT'},
-            {'x': 3, 'y': 4, 'direction': 'RIGHT'},
-            {'x': 4, 'y': 4, 'direction': 'UP'},
-            {'x': 4, 'y': 3, 'direction': 'UP'},
-            {'x': 4, 'y': 2, 'direction': 'LEFT'},
-            {'x': 3, 'y': 2, 'direction': 'LEFT'},
-            {'x': 2, 'y': 2, 'direction': 'DOWN'},
-            {'x': 2, 'y': 3, 'direction': 'DOWN'},
-        ],
-        [
-            {'x': 4, 'y': 4, 'direction': 'UP'},
-            {'x': 4, 'y': 3, 'direction': 'UP'},
-            {'x': 4, 'y': 2, 'direction': 'LEFT'},
-            {'x': 3, 'y': 2, 'direction': 'LEFT'},
-            {'x': 2, 'y': 2, 'direction': 'DOWN'},
-            {'x': 2, 'y': 3, 'direction': 'DOWN'},
-            {'x': 2, 'y': 4, 'direction': 'RIGHT'},
-            {'x': 3, 'y': 4, 'direction': 'RIGHT'},
-        ],
-        [
-            {'x': 2, 'y': 2, 'direction': 'DOWN'},
-            {'x': 2, 'y': 3, 'direction': 'DOWN'},
-            {'x': 2, 'y': 4, 'direction': 'RIGHT'},
-            {'x': 3, 'y': 4, 'direction': 'RIGHT'},
-            {'x': 4, 'y': 4, 'direction': 'UP'},
-            {'x': 4, 'y': 3, 'direction': 'UP'},
-            {'x': 4, 'y': 2, 'direction': 'LEFT'},
-            {'x': 3, 'y': 2, 'direction': 'LEFT'},
-        ]
-    ];
+    for (let row = 0; row < this.grid.length; row += 1) {
 
-    this.grid = [
+        for (let column = 0; column < this.grid[row].length; column += 1) {
 
-        [0, 1, 1, 1, 1, 1, 0],
-        [1, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 1],
-        [1, 1, 0, 0, 0, 1, 1],
-        [0, 0, 1, 0, 1, 0, 0],
-        [0, 0, 1, 0, 1, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-    ];
+            if (this.grid[row][column] === 0) {
+
+                this.world.add(new Entity('ground', [
+
+                    new Position(32 * column, 32 * row),
+                    new Animation(this.assets.images['ground'], [{'x': 0, 'y': random([0, 32, 64, 96]), 'width': 32, 'height': 32}])
+                ]));
+            }
+
+            else if (this.grid[row][column] === 1) {
+
+                this.world.add(new Entity('rock', [
+
+                    new Position(32 * column, 32 * row),
+                    new Animation(this.assets.images['environment'], [{'x': 0, 'y': 0, 'width': 32, 'height': 64}])
+                ]));
+            }
+
+            else if (this.grid[row][column] === 7) {
+
+                this.world.add(new Entity('end', [
+
+                    new Position(32 * column, 32 * row),
+                    new Animation(this.assets.images['hud'], [{'x': 0, 'y': 64, 'width': 32, 'height': 32}])
+                ]));
+            }
+        }
+    }
 
     this.enemies.forEach((enemy) => {
 
@@ -83,19 +82,17 @@ function start() {
         ]));
     });
 
-    for (let row = 0; row < this.grid.length; row += 1) {
+    for (let move = 0; move < this.moves; move += 1) {
 
-        for (let column = 0; column < this.grid[row].length; column += 1) {
+        const heart = new Entity('heart', [
 
-            if (this.grid[row][column] === 1) {
+            new Position(this.camera.x + 20 * move + 20, this.camera.y + 20),
+            new Animation(this.assets.images['hud'], [{'x': 0, 'y': 64, 'width': 32, 'height': 32}]),
+            new HUD(this.camera, move)
+        ]);
 
-                this.world.add(new Entity('rock', [
-
-                    new Position(32 * column, 32 * row),
-                    new Animation(this.assets.images['environment'], [{'x': 0, 'y': 0, 'width': 32, 'height': 64}])
-                ]));
-            }
-        }
+        this.world.add(heart);
+        this.hearts.push(heart);
     }
 
     this.world.add(new Entity('hero', [

@@ -11,6 +11,7 @@ function update(delta) {
     this.systems.run.update.call(this, this.world.entities);
     this.systems.collide.update.call(this, this.world.entities);
     this.systems.step.update.call(this, this.world.entities);
+    this.systems.hud.update.call(this, this.world.entities);
     this.systems.animate.update.call(this, this.world.entities);
 
     this.inputs.length = 0;

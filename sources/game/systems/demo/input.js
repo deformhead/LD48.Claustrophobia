@@ -42,7 +42,7 @@ function input(entity) {
 
                 case 'KEY_UP':
 
-                    if (this.grid[top - 1][left] !== 0) {
+                    if (this.grid[top - 1][left] === 1) {
 
                         entity.add([
 
@@ -68,7 +68,7 @@ function input(entity) {
 
                 case 'KEY_RIGHT':
 
-                    if (this.grid[top][left + 1] !== 0) {
+                    if (this.grid[top][left + 1] === 1) {
 
                         entity.add([
 
@@ -94,7 +94,7 @@ function input(entity) {
 
                 case 'KEY_DOWN':
 
-                    if (this.grid[top + 1][left] !== 0) {
+                    if (this.grid[top + 1][left] === 1) {
 
                         entity.add([
 
@@ -120,7 +120,7 @@ function input(entity) {
 
                 case 'KEY_LEFT':
 
-                    if (this.grid[top][left - 1] !== 0) {
+                    if (this.grid[top][left - 1] === 1) {
 
                         entity.add([
 

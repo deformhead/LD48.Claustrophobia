@@ -55,6 +55,27 @@ function run(entity) {
 
         entity.remove(['run']);
 
+        this.moves -= 1;
+        this.world.remove(this.hearts.splice(-1, 1)[0]);
+
+        console.log(this.moves, this.hearts);
+
+        if (this.grid[entity.get('grid').top][entity.get('grid').left] === 7) {
+
+            this.level = this.levels[this.levels.indexOf(this.level) + 1] || this.levels[0];
+
+            this.restart();
+
+            return;
+        }
+
+        if (this.moves === 0) {
+
+            this.restart();
+
+            return;
+        }
+
         const gridComponent = entity.get('grid');
 
         const left = gridComponent.left;

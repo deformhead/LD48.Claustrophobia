@@ -15,6 +15,14 @@ const images = [
     {
         'name': 'environment',
         'source': require('./environment-16x16@2x.png')
+    },
+    {
+        'name': 'items',
+        'source': require('./items-16x16@2x.png')
+    },
+    {
+        'name': 'hud',
+        'source': require('./hud-16x16@2x.png')
     }
 ];
 
