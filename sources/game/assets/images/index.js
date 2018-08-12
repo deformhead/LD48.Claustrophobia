@@ -23,6 +23,10 @@ const images = [
     {
         'name': 'hud',
         'source': require('./hud-16x16@2x.png')
+    },
+    {
+        'name': 'black',
+        'source': require('./black-16x16@2x.png')
     }
 ];
 

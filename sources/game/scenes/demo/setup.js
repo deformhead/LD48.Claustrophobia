@@ -9,6 +9,7 @@ import {input} from 'systems/demo/input.js';
 import {step} from 'systems/demo/step.js';
 import {render} from 'systems/demo/render.js';
 import {run} from 'systems/demo/run.js';
+import {shadow} from 'systems/demo/shadow.js';
 
 function setup() {
 
@@ -27,6 +28,7 @@ function setup() {
         'render': new System(['position', 'animation'], render.bind(this)),
         'hud': new System(['hud'], hud.bind(this)),
         'run': new System(['direction', 'run'], run.bind(this)),
+        'shadow': new System(['shadow'], shadow.bind(this)),
     };
 }
 

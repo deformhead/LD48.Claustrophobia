@@ -15,6 +15,11 @@ function animate(entity) {
             animationComponent.current = animationComponent.frames[animationComponent.frame];
         }
     }
+
+    if (entity.name === 'shadow') {
+
+        //console.log(animationComponent.frame, animationComponent.elapsed);
+    }
 }
 
 export {animate};

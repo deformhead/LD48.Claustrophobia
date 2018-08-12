@@ -9,6 +9,7 @@ import {Grid} from 'components/grid.js';
 import {Input} from 'components/input.js';
 import {Position} from 'components/position.js';
 import {Pattern} from 'components/pattern.js';
+import {Shadow} from 'components/shadow.js';
 import {Spritesheet} from 'components/spritesheet.js';
 
 import {one} from './levels/one.js';
@@ -83,19 +84,6 @@ function start() {
         ]));
     });
 
-    for (let move = 0; move < this.moves; move += 1) {
-
-        const heart = new Entity('heart', [
-
-            new Position(this.camera.x + 20 * move + 20, this.camera.y + 20),
-            new Animation(this.assets.images['hud'], [{'x': 0, 'y': 64, 'width': 32, 'height': 32}]),
-            new HUD(this.camera, move)
-        ]);
-
-        this.world.add(heart);
-        this.hearts.push(heart);
-    }
-
     this.world.add(new Entity('hero', [
 
         new Direction('DOWN'),
@@ -120,6 +108,27 @@ function start() {
             }
         )
     ]));
+
+    this.world.add(new Entity('shadow', [
+
+        new Position(this.camera.x, this.camera.y),
+        new Animation(this.assets.images['black'], [{'x': 0, 'y': 288 * 6, 'width': 320, 'height': 288}, {'x': 320, 'y': 288 * 6, 'width': 320, 'height': 288}]),
+        new HUD(this.camera, [this.size.width / 2, this.size.height / 2], 0),
+        new Shadow()
+    ]));
+
+    for (let move = 0; move < this.moves; move += 1) {
+
+        const heart = new Entity('heart', [
+
+            new Position(this.camera.x + 20 * move + 20, this.camera.y + 20),
+            new Animation(this.assets.images['hud'], [{'x': 0, 'y': 64, 'width': 32, 'height': 32}]),
+            new HUD(this.camera, [move * 24, 0], 16)
+        ]);
+
+        this.world.add(heart);
+        this.hearts.push(heart);
+    }
 }
 
 export {start};
