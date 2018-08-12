@@ -60,7 +60,14 @@ function run(entity) {
 
         if (this.grid[entity.get('grid').top][entity.get('grid').left] === 7) {
 
-            this.level = this.levels[this.levels.indexOf(this.level) + 1] || this.levels[0];
+            const index = this.levels.indexOf(this.level) + 1;
+
+            if (typeof this.levels[index] === 'undefined') {
+
+                this.load('splash');
+            }
+
+            this.level = this.levels[index];
 
             this.restart();
 

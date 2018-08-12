@@ -6,6 +6,7 @@ function update(delta) {
     // console.log('update demo scene');
 
     this.delta = delta;
+    this.elapsed += delta;
 
     this.systems.input.update.call(this, this.world.entities);
     this.systems.run.update.call(this, this.world.entities);

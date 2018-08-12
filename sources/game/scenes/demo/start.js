@@ -29,6 +29,7 @@ function start() {
     const top = this.level.hero[1];
 
     this.delta = 0;
+    this.elapsed = 0;
     this.inputs.length = 0;
     this.world = new World();
     this.camera = {

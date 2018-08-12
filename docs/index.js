@@ -302,6 +302,16 @@ new __WEBPACK_IMPORTED_MODULE_0_core_theatre_js__["a" /* Theatre */]({
     }
 });
 
+document.body.style.margin = '0';
+document.documentElement.style.width = '100%';
+document.documentElement.style.height = '100%';
+document.body.style.background = '#000';
+document.body.style.width = '100%';
+document.body.style.height = '100%';
+document.getElementById('theatre').style.position = 'absolute';
+document.getElementById('theatre').style.left = 'calc(50% - 160px)';
+document.getElementById('theatre').style.top = 'calc(50% - 144px)';
+
 
 /***/ }),
 /* 8 */
@@ -877,6 +887,16 @@ function render() {
     this.context.fillRect(0, 0, this.size.width, this.size.height);
 
     this.systems.render.update.call(this, this.world.entities);
+
+    let opacity = 0;
+
+    if (this.elapsed < 800) {
+
+        opacity = 1 - this.elapsed / 800;
+    }
+
+    this.context.fillStyle = 'rgba(24, 48, 48, ' + opacity + ')';
+    this.context.fillRect(0, 0, this.size.width, this.size.height);
 }
 
 
@@ -1665,7 +1685,14 @@ function run(entity) {
 
         if (this.grid[entity.get('grid').top][entity.get('grid').left] === 7) {
 
-            this.level = this.levels[this.levels.indexOf(this.level) + 1] || this.levels[0];
+            const index = this.levels.indexOf(this.level) + 1;
+
+            if (typeof this.levels[index] === 'undefined') {
+
+                this.load('splash');
+            }
+
+            this.level = this.levels[index];
 
             this.restart();
 
@@ -1743,7 +1770,35 @@ function run(entity) {
 
 function shadow(entity) {
 
-    const size = this.moves > 4 ? 6 : this.moves + 2;
+    let size;
+
+    switch (this.moves) {
+
+        case 1:
+        case 2:
+
+            size = 3;
+
+        break;
+
+        case 3:
+        case 4:
+
+            size = 4;
+
+        break;
+
+        case 5:
+        case 6:
+
+            size = 5;
+
+        break;
+
+        default:
+
+            size = 6;
+    }
 
     const shadowComponent = entity.get('shadow');
 
@@ -1816,6 +1871,7 @@ function start() {
     const top = this.level.hero[1];
 
     this.delta = 0;
+    this.elapsed = 0;
     this.inputs.length = 0;
     this.world = new __WEBPACK_IMPORTED_MODULE_0_modules_world_js__["c" /* World */]();
     this.camera = {
@@ -2296,6 +2352,7 @@ function update(delta) {
     // console.log('update demo scene');
 
     this.delta = delta;
+    this.elapsed += delta;
 
     this.systems.input.update.call(this, this.world.entities);
     this.systems.run.update.call(this, this.world.entities);
