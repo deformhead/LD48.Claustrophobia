@@ -17,10 +17,11 @@ import {zeroTwo} from './levels/zero-two.js';
 import {one} from './levels/one.js';
 import {two} from './levels/two.js';
 import {three} from './levels/three.js';
+import {four} from './levels/four.js';
 
 function start() {
 
-    this.levels = [zero, zeroTwo, one, two, three];
+    this.levels = [zero, zeroTwo, one, two, three, four];
     this.level = this.level || this.levels[0];
 
     console.log('start demo scene');
