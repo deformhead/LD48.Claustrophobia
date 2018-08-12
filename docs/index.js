@@ -1632,8 +1632,6 @@ function run(entity) {
         this.moves -= 1;
         this.world.remove(this.hearts.splice(-1, 1)[0]);
 
-        console.log(this.moves, this.hearts);
-
         if (this.grid[entity.get('grid').top][entity.get('grid').left] === 7) {
 
             this.level = this.levels[this.levels.indexOf(this.level) + 1] || this.levels[0];
@@ -1722,6 +1720,8 @@ function run(entity) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_components_spritesheet_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__levels_one_js__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__levels_two_js__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__levels_three_js__ = __webpack_require__(53);
+
 
 
 
@@ -1740,7 +1740,7 @@ function run(entity) {
 
 function start() {
 
-    this.levels = [__WEBPACK_IMPORTED_MODULE_11__levels_one_js__["a" /* one */], __WEBPACK_IMPORTED_MODULE_12__levels_two_js__["a" /* two */]];
+    this.levels = [__WEBPACK_IMPORTED_MODULE_11__levels_one_js__["a" /* one */], __WEBPACK_IMPORTED_MODULE_12__levels_two_js__["a" /* two */], __WEBPACK_IMPORTED_MODULE_13__levels_three_js__["a" /* three */]];
     this.level = this.level || this.levels[0];
 
     console.log('start demo scene');
@@ -2110,6 +2110,82 @@ function shuffle(array) {
 }
 
 // exports current module as a function
+
+
+
+/***/ }),
+/* 53 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return three; });
+const three = {
+
+    'moves': 8,
+    'hero': [5, 1],
+    'grid': [
+
+        [8, 1, 1, 1, 1, 1, 8],
+        [1, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 1, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 1],
+        [1, 7, 0, 0, 0, 0, 1],
+        [8, 1, 1, 1, 1, 1, 8],
+    ],
+    'enemies': [
+
+        [
+            {'x': 4, 'y': 3, 'direction': 'UP'},
+            {'x': 4, 'y': 2, 'direction': 'UP'},
+            {'x': 4, 'y': 1, 'direction': 'LEFT'},
+            {'x': 3, 'y': 1, 'direction': 'LEFT'},
+            {'x': 2, 'y': 1, 'direction': 'LEFT'},
+            {'x': 1, 'y': 1, 'direction': 'DOWN'},
+            {'x': 1, 'y': 2, 'direction': 'DOWN'},
+            {'x': 1, 'y': 3, 'direction': 'DOWN'},
+            {'x': 1, 'y': 4, 'direction': 'RIGHT'},
+            {'x': 2, 'y': 4, 'direction': 'RIGHT'},
+            {'x': 3, 'y': 4, 'direction': 'RIGHT'},
+            {'x': 4, 'y': 4, 'direction': 'UP'},
+        ],
+        [
+            {'x': 2, 'y': 3, 'direction': 'UP'},
+            {'x': 2, 'y': 2, 'direction': 'RIGHT'},
+            {'x': 3, 'y': 2, 'direction': 'RIGHT'},
+            {'x': 4, 'y': 2, 'direction': 'RIGHT'},
+            {'x': 5, 'y': 2, 'direction': 'DOWN'},
+            {'x': 5, 'y': 3, 'direction': 'DOWN'},
+            {'x': 5, 'y': 4, 'direction': 'DOWN'},
+            {'x': 5, 'y': 5, 'direction': 'LEFT'},
+            {'x': 4, 'y': 5, 'direction': 'LEFT'},
+            {'x': 3, 'y': 5, 'direction': 'LEFT'},
+            {'x': 2, 'y': 5, 'direction': 'UP'},
+            {'x': 2, 'y': 4, 'direction': 'UP'},
+        ],
+        [
+            {'x': 5, 'y': 5, 'direction': 'UP'},
+            {'x': 5, 'y': 4, 'direction': 'LEFT'},
+            {'x': 4, 'y': 4, 'direction': 'DOWN'},
+            {'x': 4, 'y': 5, 'direction': 'RIGHT'},
+        ],
+        [
+            {'x': 2, 'y': 1, 'direction': 'LEFT'},
+            {'x': 1, 'y': 1, 'direction': 'DOWN'},
+            {'x': 1, 'y': 2, 'direction': 'DOWN'},
+            {'x': 1, 'y': 3, 'direction': 'RIGHT'},
+            {'x': 2, 'y': 3, 'direction': 'UP'},
+            {'x': 2, 'y': 2, 'direction': 'UP'},
+        ],
+        [
+            {'x': 2, 'y': 4, 'direction': 'DOWN'},
+            {'x': 2, 'y': 5, 'direction': 'UP'},
+            {'x': 2, 'y': 4, 'direction': 'LEFT'},
+            {'x': 1, 'y': 4, 'direction': 'RIGHT'},
+        ],
+    ]
+};
+
 
 
 

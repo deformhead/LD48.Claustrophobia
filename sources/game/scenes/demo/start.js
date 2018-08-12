@@ -13,10 +13,11 @@ import {Spritesheet} from 'components/spritesheet.js';
 
 import {one} from './levels/one.js';
 import {two} from './levels/two.js';
+import {three} from './levels/three.js';
 
 function start() {
 
-    this.levels = [one, two];
+    this.levels = [one, two, three];
     this.level = this.level || this.levels[0];
 
     console.log('start demo scene');
